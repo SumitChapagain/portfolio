@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav>
+        <a href="index.html">Scoreboard</a>
+        <a href="leaderboard.html" class="active">Leaderboard</a>
+    </nav>
+
+    <div class="container">
+        <h2>Leaderboard</h2>
+        <div id="leaderboard-container" class="leaderboard-box"></div>
+
+
+    <!-- Party Popper Overlay (at the bottom corners) -->
+    <div id="party-overlay">
+        <div class="party-popper left">
+            <img src="assets/pop.gif" alt="Party Popper" />
+        </div>
+        <div class="party-popper right">
+            <img src="./images/pop.gif" alt="Party Popper" />
+        </div>
+    </div>
+
+    <!-- Final Results Popups -->
+    <div id="results-popup-container" class="results-popup-container"></div>
+
+    <script>
+        let roundsData = JSON.parse(localStorage.getItem("roundsData")) || {};
+        let finalScores = {};
+
+        // Calculate final scores
+        for (let round in roundsData) {
+            for (let team in roundsData[round]) {
+                finalScores[team] = (finalScores[team] || 0) + roundsData[round][team];
+            }
+        }
+
+        let leaderboardContainer = document.getElementById("leaderboard-container");
+        let sortedTeams = Object.entries(finalScores).sort((a, b) => b[1] - a[1]);
+
+        let medalIcons = ["🥇", "🥈", "🥉", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣"];
+
+        sortedTeams.forEach((team, index) => {
+            let medal = index < 8 ? `<span class="medal">${medalIcons[index]}</span>` : "";
+            leaderboardContainer.innerHTML += `
+                <div class="leaderboard-item">
+                    ${medal} <span>${team[0]}</span>
+                    <span>${team[1]} pts</span>
+                </div>
+            `;
+        });
+
+        // Complete Quiz function
+        function completeQuiz() {
+            // Show the party popper animation
+            document.getElementById("party-overlay").style.display = "flex";
+
+            // Hide the leaderboard and quiz button during the animation
+            document.querySelector(".container").style.display = "none";
+        }
+
+        // Show final leaderboard results when clicked anywhere on the screen
+        document.body.addEventListener("click", function () {
+            if (!document.getElementById("results-popup-container").childElementCount) {
+                showResults();
+            }
+        });
+
+    </script>
+
+    <style>
+        /* Party popper overlay */
+        #party-overlay {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            z-index: 999;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 10px;
+        }
+
+        .party-popper img {
+            width: 80px;
+            height: auto;
+            animation: pop 1.5s ease-in-out infinite;
+        }
+
+        .party-popper.left {
+            transform: scaleX(-1); /* Mirror image for left side */
+        }
+
+        @keyframes pop {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.5; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Final results popups container */
+        .results-popup-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            z-index: 1000;
+        }
+
+        .result-popup-card {
+            background-color: white;
+            padding: 20px;
+            width: 200px;
+            height: 250px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            opacity: 0;
+            animation: fadeIn 0.5s forwards;
+        }
+
+        .popup-card-content h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .popup-card-content p {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+    </style>
+</body>
+</html>
