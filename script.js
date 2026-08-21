@@ -1,9 +1,28 @@
-function toggleMenu() {
+function toggleMenu(e) {
+  if (e) e.stopPropagation();
   const menu = document.querySelector(".menu-links");
   const icon = document.querySelector(".hamburger-icon");
-  menu.classList.toggle("open");
-  icon.classList.toggle("open");
+  if (menu && icon) {
+    menu.classList.toggle("open");
+    icon.classList.toggle("open");
+  }
 }
+
+function closeMenu() {
+  const menu = document.querySelector(".menu-links");
+  const icon = document.querySelector(".hamburger-icon");
+  if (menu && icon && menu.classList.contains("open")) {
+    menu.classList.remove("open");
+    icon.classList.remove("open");
+  }
+}
+
+document.addEventListener("click", (e) => {
+  const hamburgerMenu = document.querySelector(".hamburger-menu");
+  if (hamburgerMenu && !hamburgerMenu.contains(e.target)) {
+    closeMenu();
+  }
+});
 
 function updateCheckmarkIcons(theme) {
   const checkmarkIcons = document.querySelectorAll('img[src*="checkmark"]');
@@ -122,52 +141,81 @@ document.addEventListener('DOMContentLoaded', () => {
   const contactForm = document.getElementById('contactForm');
   
   if (contactForm) {
+    const publicKey = 'I74UbT1MTIC4yFPq-';
+    const serviceID = 'service_zffamkn';
+    const templateID = 'template_vk97hjj';
+
+    if (typeof emailjs !== 'undefined') {
+      emailjs.init({
+        publicKey: publicKey,
+      });
+    }
+
     contactForm.addEventListener('submit', function(e) {
       e.preventDefault();
 
-      const serviceID = 'service_zffamkn';
-      const templateID = 'template_vk97hjj';
-      const publicKey = 'I74UbT1MTIC4yFPq-';
-
       const formData = new FormData(this);
+      const name = formData.get('name')?.trim();
+      const email = formData.get('email')?.trim();
+      const subject = formData.get('subject')?.trim();
+      const message = formData.get('message')?.trim();
       
-      if (!formData.get('name') || !formData.get('email') || !formData.get('subject') || !formData.get('message')) {
+      if (!name || !email || !subject || !message) {
         showNotification('Please fill in all fields', 'error');
         return;
       }
       
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(formData.get('email'))) {
+      if (!emailRegex.test(email)) {
         showNotification('Please enter a valid email address', 'error');
         return;
       }
 
+      if (typeof emailjs === 'undefined') {
+        showNotification('Email service is unavailable. Please check your internet connection.', 'error');
+        return;
+      }
+
       const submitButton = this.querySelector('button[type="submit"]');
-      const originalText = submitButton.querySelector('span').textContent;
+      const submitSpan = submitButton ? submitButton.querySelector('span') : null;
+      const originalText = submitSpan ? submitSpan.textContent : 'Send Message';
       
-      submitButton.querySelector('span').textContent = 'Sending...';
-      submitButton.disabled = true;
+      if (submitSpan) submitSpan.textContent = 'Sending...';
+      if (submitButton) submitButton.disabled = true;
 
       const templateParams = {
-        name: formData.get('name'),
-        email: formData.get('email'),
-        title: formData.get('subject'),
-        message: formData.get('message'),
+        name: name,
+        from_name: name,
+        user_name: name,
+        email: email,
+        from_email: email,
+        user_email: email,
+        reply_to: email,
+        subject: subject,
+        title: subject,
+        message: message,
         time: new Date().toLocaleString(),
       };
 
-      emailjs.init(publicKey);
-      emailjs.send(serviceID, templateID, templateParams)
+      emailjs.init({
+        publicKey: publicKey,
+      });
+
+      emailjs.send(serviceID, templateID, templateParams, {
+        publicKey: publicKey,
+      })
         .then(() => {
-          submitButton.querySelector('span').textContent = originalText;
-          submitButton.disabled = false;
+          if (submitSpan) submitSpan.textContent = originalText;
+          if (submitButton) submitButton.disabled = false;
           showNotification('Message sent successfully! I\'ll get back to you soon.', 'success');
           contactForm.reset();
-        }, (err) => {
-          submitButton.querySelector('span').textContent = originalText;
-          submitButton.disabled = false;
-          showNotification('Failed to send message. Please try again later.', 'error');
-          console.error('EmailJS Error:', err);
+        })
+        .catch((err) => {
+          if (submitSpan) submitSpan.textContent = originalText;
+          if (submitButton) submitButton.disabled = false;
+          const errorMsg = err?.text || err?.message || (typeof err === 'string' ? err : 'Please try again later.');
+          showNotification(`Failed to send message: ${errorMsg}`, 'error');
+          console.error('EmailJS Error details:', { status: err?.status, text: err?.text, error: err });
         });
     });
   }

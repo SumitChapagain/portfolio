@@ -157,6 +157,10 @@
   .text-container {
     text-align: justify;
   }
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
 }
 
 @media screen and (max-width: 480px) {
@@ -165,6 +169,10 @@
   }
   .contact-form {
     padding: 1rem;
+  }
+  .form-row {
+    flex-direction: column;
+    gap: 0;
   }
   .contact-info-upper-container {
     padding: 1rem;
