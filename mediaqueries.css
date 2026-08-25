@@ -1,13 +1,20 @@
+/* ==========================================================================
+   Responsive Media Queries
+   ========================================================================== */
+
+/* Large Laptops & Desktops */
 @media screen and (max-width: 1400px) {
   #profile {
-    height: 83vh;
-    margin-bottom: 6rem;
+    height: auto;
+    min-height: 80vh;
+    margin-bottom: 4rem;
   }
   .about-containers {
     flex-wrap: wrap;
   }
 }
 
+/* Laptops & Tablets (Landscape) */
 @media screen and (max-width: 1200px) {
   #desktop-nav {
     display: none;
@@ -19,19 +26,23 @@
   }
   #experience,
   .experience-details-container {
-    margin-top: 2rem;
+    margin-top: 1.5rem;
   }
   #profile,
   .section-container {
     display: block;
+    height: auto;
   }
   .arrow {
     display: none;
   }
   section {
     height: auto;
+    min-height: auto;
     margin: 0 5%;
-    padding-top: 10vh;
+    padding-top: 6rem;
+    padding-bottom: 2rem;
+    box-sizing: border-box;
   }
   .section-container {
     height: auto;
@@ -42,7 +53,8 @@
     margin: 0 auto 2rem;
   }
   .about-containers {
-    margin-top: 0;
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
   }
   .dark-mode-toggle {
     margin-left: 0;
@@ -50,7 +62,36 @@
   }
 }
 
+/* Tablets (Portrait) */
+@media screen and (max-width: 900px) {
+  #experience .about-containers,
+  #about .about-containers {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 1.75rem;
+  }
+  #experience .details-container,
+  #about .details-container {
+    width: 100%;
+    box-sizing: border-box;
+  }
+  #experience .details-container {
+    padding: 1.75rem 2rem;
+  }
+  #experience .article-container {
+    gap: 1.5rem 1.5rem;
+  }
+}
+
+/* Mobile & Small Tablets */
 @media screen and (max-width: 768px) {
+  section {
+    margin: 0 1.5rem;
+    padding-top: 5rem;
+    padding-bottom: 2rem;
+  }
+
   .footer-top {
     position: static;
     flex-direction: column;
@@ -67,20 +108,34 @@
     flex-direction: column;
     gap: 2rem;
     align-items: center;
+    width: 100%;
   }
+
   .contact-info-section,
   .contact-form-section {
     max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
   }
+
+  .contact-info-upper-container,
+  .contact-form {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
   .contact-subtitle {
     font-size: 1.5rem;
   }
+
   .contact-description {
     font-size: 1rem;
   }
+
   .contact-form {
     padding: 1.5rem;
   }
+
   .form-group input,
   .form-group textarea {
     padding: 0.7rem 0.8rem;
@@ -88,93 +143,308 @@
   }
 }
 
+/* Standard Mobile Devices */
 @media screen and (max-width: 600px) {
-  #contact {
-    padding-bottom: 5vh;
-  }
-  footer {
-    padding-top: 5vh;
+  section {
+    margin: 0 1.25rem;
+    padding-top: 4rem;
+    padding-bottom: 2rem;
     height: auto;
+    min-height: auto;
   }
+
   #profile {
-    height: 83vh;
+    height: auto;
+    min-height: auto;
     margin-bottom: 0;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
   }
-  article {
-    font-size: 1rem;
+
+  .section__pic-container {
+    width: auto;
+    max-width: 250px;
+    height: auto;
+    aspect-ratio: 1/1;
+    margin: 0 auto 1.5rem;
+    justify-content: center;
   }
-  footer nav {
-    height: fit-content;
-    margin-bottom: 2rem;
+
+  #profile .section__pic-container img {
+    width: 230px;
+    height: 230px;
+    max-width: 100%;
   }
+
   .about-containers,
   .btn-container {
     flex-wrap: wrap;
   }
+
+  #experience .about-containers,
+  #about .about-containers,
   #projects .about-containers {
     flex-direction: column;
+    width: 100%;
+    gap: 1.5rem;
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
   }
+
+  .details-container {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  #experience .details-container {
+    padding: 1.5rem 1.25rem;
+    border-radius: 1.5rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  #about .details-container {
+    padding: 1.5rem 1.25rem;
+    border-radius: 1.5rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  #projects .details-container {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  #experience .article-container {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem 0.85rem;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: left;
+  }
+
+  #experience article {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 0.65rem;
+    width: 100%;
+    min-width: 0;
+    font-size: 1rem;
+  }
+
+  #experience article .icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  #experience article div {
+    min-width: 0;
+    flex: 1;
+  }
+
+  #experience article h3 {
+    font-size: 0.95rem;
+    white-space: normal;
+    word-break: normal;
+    overflow-wrap: break-word;
+    line-height: 1.25;
+  }
+
+  #experience article p {
+    font-size: 0.8rem;
+    margin: 0.15rem 0 0 0;
+    word-break: normal;
+  }
+
+  .experience-sub-title {
+    font-size: 1.25rem;
+    margin-bottom: 1.25rem;
+    text-align: center;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .section__text__p1 {
+    font-size: 0.95rem;
+  }
+
+  .section__text__p2 {
+    font-size: 1.25rem;
+  }
+
+  .text-container {
+    text-align: left;
+    line-height: 1.6;
+  }
+
+  #contact {
+    padding-bottom: 3rem;
+  }
+
+  footer {
+    padding-top: 3rem;
+    height: auto;
+  }
+
+  footer nav {
+    height: fit-content;
+    margin-bottom: 2rem;
+  }
+
   .dark-mode-toggle {
     display: flex;
     justify-content: center;
     margin-top: 0.5rem;
   }
+
   .contact-info-upper-container {
     flex-wrap: wrap;
+    padding: 1.25rem;
+    width: 100%;
+    box-sizing: border-box;
   }
+
   .contact-info-container {
     margin: 0;
     flex-direction: column;
     text-align: center;
     gap: 0.5rem;
   }
+
   .contact-info-container p,
   .nav-links li a {
     font-size: 1rem;
   }
-  .experience-sub-title {
-    font-size: 1.25rem;
-  }
+
   .logo {
     font-size: 1.5rem;
   }
+
   .nav-links {
     flex-direction: column;
     gap: 0.5rem;
     text-align: center;
   }
-  .section__pic-container {
-    width: auto;
-    height: 46vw;
-    justify-content: center;
-  }
-  .section__text__p2 {
-    font-size: 1.25rem;
-  }
-  .title {
-    font-size: 2rem;
-  }
-  .text-container {
-    text-align: justify;
-  }
+
   .form-row {
     flex-direction: column;
     gap: 0;
   }
 }
 
+/* Small Mobile Devices (e.g. iPhone SE, 375px - 480px) */
 @media screen and (max-width: 480px) {
+  section {
+    margin: 0 0.85rem;
+    padding-top: 3.5rem;
+    padding-bottom: 1.5rem;
+  }
+
+  #experience .details-container {
+    padding: 1.25rem 0.85rem;
+    border-radius: 1.25rem;
+  }
+
+  #about .details-container {
+    padding: 1.25rem 0.85rem;
+    border-radius: 1.25rem;
+  }
+
+  #experience .article-container {
+    gap: 1.1rem 0.5rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #experience article {
+    gap: 0.45rem;
+  }
+
+  #experience article .icon {
+    width: 1.15rem;
+    height: 1.15rem;
+    margin-top: 1px;
+  }
+
+  #experience article h3 {
+    font-size: 0.88rem;
+    line-height: 1.2;
+  }
+
+  #experience article p {
+    font-size: 0.75rem;
+  }
+
+  .experience-sub-title {
+    font-size: 1.15rem;
+    margin-bottom: 1rem;
+  }
+
+  .title {
+    font-size: 1.75rem;
+  }
+
   #contact {
-    padding: 10vh 1rem 5vh;
+    padding: 4rem 0 3rem;
   }
+
   .contact-form {
-    padding: 1rem;
+    padding: 1.25rem 1rem;
+    border-radius: 1.25rem;
   }
-  .form-row {
-    flex-direction: column;
-    gap: 0;
-  }
+
   .contact-info-upper-container {
     padding: 1rem;
+    border-radius: 1.25rem;
+  }
+
+  .btn-container {
+    gap: 0.75rem;
+  }
+
+  .cssbuttons-io span {
+    padding: 0.85em 0.7em;
+    font-size: 13px;
+  }
+}
+
+/* Extra Small Mobile Devices (< 360px) */
+@media screen and (max-width: 360px) {
+  section {
+    margin: 0 0.5rem;
+  }
+
+  #experience .details-container {
+    padding: 1rem 0.65rem;
+  }
+
+  #experience .article-container {
+    gap: 0.9rem 0.35rem;
+  }
+
+  #experience article {
+    gap: 0.35rem;
+  }
+
+  #experience article .icon {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  #experience article h3 {
+    font-size: 0.82rem;
+  }
+
+  #experience article p {
+    font-size: 0.7rem;
+  }
+
+  .experience-sub-title {
+    font-size: 1.05rem;
   }
 }
